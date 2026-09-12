@@ -1,0 +1,37 @@
+name: Build & Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "addons/sourcemod/scripting/**"
+      - "sourceknight.yaml"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build plugin(s)
+        uses: maxime1907/action-sourceknight@v1
+        with:
+          cmd: build
+
+      - name: Upload compiled artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jb-ctrev-mute-plugins
+          path: /home/runner/work/**/addons/sourcemod/plugins/*.smx
+          if-no-files-found: error
+
+      - name: Create Release
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          files: |
+            addons/sourcemod/plugins/*.smx
