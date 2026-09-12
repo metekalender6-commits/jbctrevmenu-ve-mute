@@ -1,0 +1,15 @@
+name: jb-ctrev-mute
+description: T sesini otomatik susturan ve CT icin paylasimli revive sistemi sunan SourceMod eklentisi (CS2)
+
+targets:
+  - jb_ctrev_mute
+
+sourceknight:
+  spcomp_version: "1.11.0-git6934"
+
+dependencies:
+  - name: sourcemod
+    type: sourcemod
+    version: "1.12-dev"
+
+output: /addons/sourcemod/plugins
